@@ -6,6 +6,7 @@
 
 class BasicBlock {
 public:
+    std::string name; 
     std::vector<std::string> succ;
     std::vector<Statement> statements;
     void insertStatement(const Statement &stmt);
