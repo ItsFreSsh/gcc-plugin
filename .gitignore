@@ -1,0 +1,12 @@
+# Compiled Object files
+*.o
+
+# Compiled Dynamic libraries
+*.so
+
+# stdout and stderr
+out
+err
+
+#editor config
+.editorconfig
