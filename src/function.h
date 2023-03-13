@@ -11,7 +11,7 @@ public:
     std::string entry_block;
     std::string exit_block;
     std::vector<BasicBlock> blocks;
-    void Function::insertBasicBlock(const BasicBlock& bb);
+    void insertBasicBlock(const BasicBlock& bb);
     void print() const;
 };
 
