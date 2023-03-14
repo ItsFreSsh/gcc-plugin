@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include "function.h"
+
 class Json {
 public:
     std::vector<Function> functions;
