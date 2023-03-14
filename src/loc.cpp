@@ -2,5 +2,6 @@
 #include "loc.h"
 
 void Loc::print() const {
-    // Print loc
+    std::cout << "\t\t\t\t\t\"loc\": {";
+    std::cout << "\"file\": " << "\"" << file << "\"" << ", " << "\"line\": " << line << " }" <<  std::endl;
 }
