@@ -8,7 +8,6 @@
 #include "basic-block.h"
 #include "gimple-pretty-print.h"
 #include "tree.h"
-#include "gimple-expr.h"
 #include "print-tree.h"
 #include "gimple.h"
 #include "gimple-iterator.h"
