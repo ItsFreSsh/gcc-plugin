@@ -12,6 +12,10 @@
 #include "gimple-iterator.h"
 #include "gimple-expr.h"
 
+#include "json.h"
+#include "function.h"
+#include "process-function.h"
+
 // We must assert that this plugin is GPL compatible
 int plugin_is_GPL_compatible;
 
@@ -33,6 +37,8 @@ struct pass_data my_pass_data = {
 		.todo_flags_start = 0,					/* todo_flags_start */
 		.todo_flags_finish = 0					/* todo_flags_finish */
 	};
+
+Json json;
 
 class my_ssa_pass : public gimple_opt_pass {
     public: 
@@ -67,6 +73,11 @@ class my_ssa_pass : public gimple_opt_pass {
         }
 };
 
+// Print json, called after all other passes finished
+void execute_finish_unit (void *gcc_data, void *user_data) {
+	json.print();
+}
+
 // Plugin initialization
 int plugin_init(struct plugin_name_args *plugin_info, struct plugin_gcc_version *version) {
 	// Check plugin version against gcc version
@@ -86,7 +97,7 @@ int plugin_init(struct plugin_name_args *plugin_info, struct plugin_gcc_version 
 	pass_info.ref_pass_instance_number = 1;
     pass_info.pos_op = PASS_POS_INSERT_AFTER;
 	register_callback(plugin_info->base_name, PLUGIN_PASS_MANAGER_SETUP, NULL, &pass_info);
-	// pass after we finish, probably will be used for printing final JSON
-	//register_callback(plugin_info->base_name, PLUGIN_ATTRIBUTES, register_attributes, NULL);
+	//pass after we finish, will be used for printing final JSON
+	register_callback (plugin_info->base_name, PLUGIN_FINISH_UNIT, &execute_finish_unit, NULL);
 	return 0;
 }
