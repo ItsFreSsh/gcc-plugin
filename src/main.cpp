@@ -25,7 +25,6 @@ static struct plugin_info my_plugin_info = {
     .help = "TBD"
 };
 
-
 struct pass_data my_pass_data = {
 		.type = GIMPLE_PASS,
 		.name = "ssa_pass",						/* name */
@@ -55,20 +54,8 @@ class my_ssa_pass : public gimple_opt_pass {
          * Code to run when a pass is executed
          */
         unsigned int execute(function *func) {
-            basic_block bb;
-            FOR_ALL_BB_FN(bb, func) {
-                gimple_bb_info *bb_info = &bb->il.gimple;
-                // Entry block
-                if (bb->index == 0) {
-                    
-                }
-                // Exit block
-                else if (bb->index == 1) {
-                }
-                // Other blocks
-                else {
-                }
-            }
+            Function f = processFunction(func);
+            json.insertFunction(f);
             return 0;
         }
 };
