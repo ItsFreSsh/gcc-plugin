@@ -6,11 +6,11 @@
 
 class BasicBlock {
 public:
-    std::string name; 
+    std::string name;
     std::vector<std::string> succ;
     std::vector<Statement> statements;
-    void addSuccessor(const std::string &successorName);
-    void insertStatement(const Statement &stmt);
+    void addSuccessor(const std::string& successorName);
+    void insertStatement(const Statement& stmt);
     void print() const;
 };
 
