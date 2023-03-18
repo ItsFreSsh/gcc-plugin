@@ -10,7 +10,7 @@ class Json {
 public:
     std::vector<Function> functions;
     void insertFunction(const Function& f);
-    void print() const;
+    void print(unsigned int indentBy) const;
 };
 
 #endif
