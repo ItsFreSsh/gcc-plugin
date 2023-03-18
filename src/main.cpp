@@ -21,70 +21,70 @@ int plugin_is_GPL_compatible;
 
 // TODO: proper description
 static struct plugin_info my_plugin_info = {
-    .version = "1.0", 
+    .version = "1.0",
     .help = "TBD"
 };
 
 struct pass_data my_pass_data = {
-		.type = GIMPLE_PASS,
-		.name = "ssa_pass",						/* name */
-		.optinfo_flags = OPTGROUP_NONE,			/* optinfo_flags */
-		.tv_id = TV_NONE,						/* tv_id */
-		.properties_required = PROP_gimple_any,	/* properties_required */
-		.properties_provided = 0,				/* properties_provided */
-		.properties_destroyed = 0,				/* properties_destroyed */
-		.todo_flags_start = 0,					/* todo_flags_start */
-		.todo_flags_finish = 0					/* todo_flags_finish */
-	};
+        .type = GIMPLE_PASS,
+        .name = "ssa_pass",						/* name */
+        .optinfo_flags = OPTGROUP_NONE,			/* optinfo_flags */
+        .tv_id = TV_NONE,						/* tv_id */
+        .properties_required = PROP_gimple_any,	/* properties_required */
+        .properties_provided = 0,				/* properties_provided */
+        .properties_destroyed = 0,				/* properties_destroyed */
+        .todo_flags_start = 0,					/* todo_flags_start */
+        .todo_flags_finish = 0					/* todo_flags_finish */
+};
 
 Json json;
 
-class my_ssa_pass : public gimple_opt_pass {
-    public: 
-        my_ssa_pass (const pass_data& data, gcc::context *ctxt) : gimple_opt_pass (data, ctxt) {}
+class my_ssa_pass: public gimple_opt_pass {
+public:
+    my_ssa_pass(const pass_data& data, gcc::context* ctxt): gimple_opt_pass(data, ctxt) {}
 
-        /**
-         * Execute pass if gate returns true
-         */ 
-        bool gate (function* gate_fun) {
-            return true;
-        }
+    /**
+     * Execute pass if gate returns true
+     */
+    bool gate(function* gate_fun) {
+        return true;
+    }
 
-        /**
-         * Code to run when a pass is executed
-         */
-        unsigned int execute(function *func) {
-            Function f = processFunction(func);
-            json.insertFunction(f);
-            return 0;
-        }
+    /**
+     * Code to run when a pass is executed
+     */
+    unsigned int execute(function* func) {
+        Function f = processFunction(func);
+        json.insertFunction(f);
+        return 0;
+    }
 };
 
 // Print json, called after all other passes finished
-void execute_finish_unit (void *gcc_data, void *user_data) {
-	json.print();
+void execute_finish_unit(void* gcc_data, void* user_data) {
+    json.print(0);
 }
 
 // Plugin initialization
-int plugin_init(struct plugin_name_args *plugin_info, struct plugin_gcc_version *version) {
-	// Check plugin version against gcc version
-	if (!plugin_default_version_check(version, &gcc_version)) {
-		std::cerr << "This GCC plugin is for version " << GCCPLUGIN_VERSION_MAJOR
-			<< "." << GCCPLUGIN_VERSION_MINOR << "\n";
-	    return 1;
+int plugin_init(struct plugin_name_args* plugin_info, struct plugin_gcc_version* version) {
+    // Check plugin version against gcc version
+    if (!plugin_default_version_check(version, &gcc_version)) {
+        std::cerr << "This GCC plugin is for version " << GCCPLUGIN_VERSION_MAJOR
+            << "." << GCCPLUGIN_VERSION_MINOR << "\n";
+        return 1;
     }
 
-	register_callback(plugin_info->base_name, PLUGIN_INFO, NULL, &my_plugin_info);
+    register_callback(plugin_info->base_name, PLUGIN_INFO, NULL, &my_plugin_info);
 
     // Register the phase right after ssa
     struct register_pass_info pass_info;
 
     pass_info.pass = new my_ssa_pass(my_pass_data, g);
     pass_info.reference_pass_name = "ssa";
-	pass_info.ref_pass_instance_number = 1;
+    pass_info.ref_pass_instance_number = 1;
     pass_info.pos_op = PASS_POS_INSERT_AFTER;
-	register_callback(plugin_info->base_name, PLUGIN_PASS_MANAGER_SETUP, NULL, &pass_info);
-	//pass after we finish, will be used for printing final JSON
-	register_callback (plugin_info->base_name, PLUGIN_FINISH_UNIT, &execute_finish_unit, NULL);
-	return 0;
+    register_callback(plugin_info->base_name, PLUGIN_PASS_MANAGER_SETUP, NULL, &pass_info);
+    //pass after we finish, will be used for printing final JSON
+    register_callback(plugin_info->base_name, PLUGIN_FINISH_UNIT, &execute_finish_unit, NULL);
+    return 0;
 }
