@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "basic-block.h"
+#include "var.h"
 
 class Function {
 public:
@@ -11,8 +12,10 @@ public:
     std::string entry_block;
     std::string exit_block;
     std::vector<BasicBlock> blocks;
+    std::vector<Var> parameters;
     void insertBasicBlock(const BasicBlock& bb);
-    void print() const;
+    void insertParameter(const Var& param);
+    void print(unsigned int indent) const;
 };
 
 #endif
