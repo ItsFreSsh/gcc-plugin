@@ -16,7 +16,7 @@ public:
     std::string function;
     std::string nested;
     std::string str;*/
-    void print() const;
+    void print(unsigned int indentBy) const;
 };
 
 #endif

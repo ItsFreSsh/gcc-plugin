@@ -7,7 +7,7 @@ class Loc {
 public:
     std::string file;
     int line;
-    void print() const;
+    void print(unsigned int indentBy) const;
 };
 
 #endif

@@ -11,7 +11,7 @@ public:
     std::vector<Statement> statements;
     void addSuccessor(const std::string& successorName);
     void insertStatement(const Statement& stmt);
-    void print() const;
+    void print(unsigned int indentBy) const;
 };
 
 #endif

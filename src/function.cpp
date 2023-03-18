@@ -35,7 +35,7 @@ void Function::print(unsigned int indentBy) const {
     indent(indentBy);
     std::cout << "\"exit_block\": \"" << exit_block << "\"," << std::endl;
     for (int i = 0; i < blocks.size(); i++) {
-        blocks[i].print();
+        blocks[i].print(indentBy);
         if (i < blocks.size() - 1) {
             std::cout << ",";
         }
