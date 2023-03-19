@@ -8,8 +8,8 @@ public:
     std::string name;
     size_t sizeOf;
     size_t precision;
-    size_t min;
-    size_t max;
+    long long int min;
+    unsigned long long int max;
     bool signedness;
     DataType* type; // pointer to another DataType object for pointed-to type
     void print(unsigned int indentBy) const;
